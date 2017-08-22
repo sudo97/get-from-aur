@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+if [ $# = '0' ]; then
+	list=./*/
+else
+	list=$@
+fi
+
+for dir in $list; do
+	echo "$dir"
+	read -p "Continue [y/n/s]? (y) " choice
+	case "$choice" in
+	  n|N ) exit;;
+	  s|S ) continue;;
+	esac
+	if  echo $dir | grep -P '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$' > /dev/null 2>&1 ;
+	then
+		git clone  "$dir"  $d
+		d=$(echo "$1" | sed 's/.*\/\(.*\)\.git/\1/g')
+	else
+		d=$dir
+	fi
+	cd "$d" && git pull && makepkg -fi && cd ..
+done
