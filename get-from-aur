@@ -13,10 +13,10 @@ for dir in $list; do
 	  n|N ) exit;;
 	  s|S ) continue;;
 	esac
-	if  echo $dir | grep -P '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$' > /dev/null 2>&1 ;
+	if  grep -P '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$' > /dev/null 2>&1 <<< $dir ; 
 	then
-		git clone  "$dir"  $d
-		d=$(echo "$1" | sed 's/.*\/\(.*\)\.git/\1/g')
+		git clone  "$dir"
+		d=$(sed 's/.*\/\(.*\)\.git/\1/g' <<< $dir)
 	else
 		d=$dir
 	fi
